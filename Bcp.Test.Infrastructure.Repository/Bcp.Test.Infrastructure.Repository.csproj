@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bcp.Test.Infrastructure.Data\Bcp.Test.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\Bcp.Test.Infrastructure.Interface\Bcp.Test.Infrastructure.Interface.csproj" />
+    <ProjectReference Include="..\Bcp.Test.Transversal.Common\Bcp.Test.Transversal.Common.csproj" />
+  </ItemGroup>
+
+</Project>

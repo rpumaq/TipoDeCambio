@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bcp.Test.Domain.Entity\Bcp.Test.Domain.Entity.csproj" />
+    <ProjectReference Include="..\Bcp.Test.Domain.Interface\Bcp.Test.Domain.Interface.csproj" />
+    <ProjectReference Include="..\Bcp.Test.Infrastructure.Interface\Bcp.Test.Infrastructure.Interface.csproj" />
+  </ItemGroup>
+
+</Project>

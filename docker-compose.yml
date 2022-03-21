@@ -1,0 +1,18 @@
+﻿version: '3.7'
+
+services:  
+  web:
+    image: tipocambio:latest
+    depends_on:
+      - "redis_image"
+    build:
+      context: .
+      dockerfile: Bcp.Test.Services.WebApi/Dockerfile
+    ports:
+      - "9901:80"
+
+  redis_image:
+    image: redis
+    container_name: cache
+    ports:
+      - "6379:6379"

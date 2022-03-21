@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bcp.Test.Services.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:Bcp.Test.Services.WebApi.Controllers.TipoCambioController">
+            <summary>
+            Tipo de cambio
+            </summary>
+        </member>
+        <member name="M:Bcp.Test.Services.WebApi.Controllers.TipoCambioController.#ctor(Bcp.Test.Application.Interface.ITipoCambioApplication)">
+            <summary>
+            Tipo de cambio
+            </summary>
+            <param name="tipoCambioApplication"></param>
+        </member>
+        <member name="M:Bcp.Test.Services.WebApi.Controllers.TipoCambioController.ConvertirTipoCambio(System.Decimal,System.String,System.String)">
+            <summary>
+            Calcula el tipo de cambio
+            </summary>
+            <param name="monto">Monto a convertir</param>
+            <param name="monedaOrigen">Moneda origen</param>
+            <param name="monedaDestino">Moneda destino</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
