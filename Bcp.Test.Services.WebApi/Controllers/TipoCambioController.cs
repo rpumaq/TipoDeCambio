@@ -4,6 +4,7 @@ using Bcp.Test.Application.DTO;
 using Bcp.Test.Application.Interface;
 using System.Threading.Tasks;
 using Bcp.Test.Transversal.Common;
+using System.Collections.Generic;
 
 namespace Bcp.Test.Services.WebApi.Controllers
 {
@@ -26,21 +27,52 @@ namespace Bcp.Test.Services.WebApi.Controllers
         }
 
         /// <summary>
+        /// Listo los Tipos de cambio registrados
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ListarTipoCambio")]
+        public async Task<IActionResult> ListarTipoCambio()
+        {
+            var response = await _tipoCambioApplication.ListarTipoCambio();
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+
+        /// <summary>
         /// Actualiza tipo de cambio
         /// </summary>
         /// <param name="tipoCambioDto">Objeto tipo de cambio</param>
         /// <returns></returns>
-        //[HttpPut("ActualizarTipoCambio")]
-        //public async Task<IActionResult> ActualizarTipoCambio([FromBody] TipoCambioFijoDto tipoCambioDto)
-        //{
-        //    if (tipoCambioDto == null)
-        //        return BadRequest();
-        //    var response = await _tipoCambioApplication.ActualizarTipoCambio(tipoCambioDto);
-        //    if (response.IsSuccess)
-        //        return Ok(response);
+        [HttpPost("InsertarTipoCambio")]
+        public async Task<IActionResult> InsertarTipoCambio([FromBody] TipoCambioFijoDto tipoCambioDto)
+        {
+            if (tipoCambioDto == null)
+                return BadRequest();
+            var response = await _tipoCambioApplication.InsertarTipoCambio(tipoCambioDto);
+            if (response.IsSuccess)
+                return Ok(response);
 
-        //    return BadRequest(response.Message);
-        //}
+            return BadRequest(response);
+        }
+
+        /// <summary>
+        /// Actualiza tipo de cambio
+        /// </summary>
+        /// <param name="tipoCambioDto">Objeto tipo de cambio</param>
+        /// <returns></returns>
+        [HttpPut("ActualizarTipoCambio")]
+        public async Task<IActionResult> ActualizarTipoCambio([FromBody] TipoCambioFijoDto tipoCambioDto)
+        {
+            if (tipoCambioDto == null)
+                return BadRequest();
+            var response = await _tipoCambioApplication.ActualizarTipoCambio(tipoCambioDto);
+            if (response.IsSuccess)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
 
         /// <summary>
         /// Calcula el tipo de cambio
@@ -56,7 +88,7 @@ namespace Bcp.Test.Services.WebApi.Controllers
             if (response.IsSuccess)
                 return Ok(response);
 
-            return BadRequest(response.Message);
+            return BadRequest(response);
         }
     }
 }

@@ -15,6 +15,16 @@ namespace Bcp.Test.Domain.Core
             _tipocambioRepository = tipocambioRepository;
         }
 
+        public async Task<List<TipoCambioFijo>> ListarTipoCambio()
+        {
+            return await _tipocambioRepository.ListarTipoCambio();
+        }
+
+        public async Task<bool> InsertarTipoCambio(TipoCambioFijo tipoCambio)
+        {
+            return await _tipocambioRepository.InsertarTipoCambio(tipoCambio);
+        }
+
         public async Task<bool> ActualizarTipoCambio(TipoCambioFijo tipoCambio)
         {
             return await _tipocambioRepository.ActualizarTipoCambio(tipoCambio);

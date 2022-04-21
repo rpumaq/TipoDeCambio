@@ -22,6 +22,60 @@ namespace Bcp.Test.Application.Main
             _logger = logger;
         }
 
+        public async Task<Response<List<TipoCambioFijoDto>>> ListarTipoCambio()
+        {
+            var response = new Response<List<TipoCambioFijoDto>>();
+            try
+            {
+                List<TipoCambioFijo> ltc  = await _tipocambioDomain.ListarTipoCambio();
+                List<TipoCambioFijoDto> ltcr = new List<TipoCambioFijoDto>();
+                foreach (var item in ltc)
+                {
+                    TipoCambioFijoDto tc = new TipoCambioFijoDto()
+                    {
+                        Fecha = item.Fecha,
+                        MonedaDestino = item.MonedaDestino,
+                        MonedaOrigen = item.MonedaOrigen,
+                        TipoDeCambio =item.TipoDeCambio
+                    };
+                    ltcr.Add(tc);
+                }
+                response.IsSuccess = true;
+                response.Data = ltcr;
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
+
+        public async Task<Response<bool>> InsertarTipoCambio(TipoCambioFijoDto tipoCambioDto)
+        {
+            var response = new Response<bool>();
+            try
+            {
+                var tipoCambio = _mapper.Map<TipoCambioFijo>(tipoCambioDto);
+                response.Data = await _tipocambioDomain.InsertarTipoCambio(tipoCambio);
+                if (response.Data)
+                {
+                    response.IsSuccess = true;
+                    response.Message = "Registro Exitoso!";
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Tipo de cambio ya se encuentra registrado";
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message = e.Message;
+            }
+            return response;
+        }
+
         public async Task<Response<bool>> ActualizarTipoCambio(TipoCambioFijoDto tipoCambioDto)
         {
             var response = new Response<bool>();
@@ -54,18 +108,26 @@ namespace Bcp.Test.Application.Main
 
                     tipoCambioData.TipoDeCambio = await _tipocambioDomain.ObtenerTipoCambio(DateTime.Now.Date, monedaOrigen, monedaDestino);
 
-                    if (monedaOrigen == Constantes.Moneda_Soles)
+                    if (tipoCambioData.TipoDeCambio >= 0)
                     {
-                        tipoCambioData.MontoTipoCambio = decimal.Round(monto / tipoCambioData.TipoDeCambio, 2);
-                    }
-                    else//Dolares (USD)
-                    {
-                        tipoCambioData.MontoTipoCambio = decimal.Round(monto * tipoCambioData.TipoDeCambio, 2);
-                    }
+                        if (monedaOrigen == Constantes.Moneda_Soles)
+                        {
+                            tipoCambioData.MontoTipoCambio = decimal.Round(monto / tipoCambioData.TipoDeCambio, 2);
+                        }
+                        else//Dolares (USD)
+                        {
+                            tipoCambioData.MontoTipoCambio = decimal.Round(monto * tipoCambioData.TipoDeCambio, 2);
+                        }
 
-                    response.Data = tipoCambioData;
-                    response.IsSuccess = true;
-                    response.Message = "Consulta Exitosa!";
+                        response.Data = tipoCambioData;
+                        response.IsSuccess = true;
+                        response.Message = "Consulta Exitosa";
+                    }
+                    else
+                    {
+                        response.IsSuccess = false;
+                        response.Message = "Tipo de cambio no resgistrado";
+                    }
 
                     return response;
                 }

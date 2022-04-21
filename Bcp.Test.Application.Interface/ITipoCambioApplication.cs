@@ -9,6 +9,8 @@ namespace Bcp.Test.Application.Interface
 {
     public interface ITipoCambioApplication
     {
+        Task<Response<List<TipoCambioFijoDto>>> ListarTipoCambio();
+        Task<Response<bool>> InsertarTipoCambio(TipoCambioFijoDto tipoCambioDto);
         Task<Response<bool>> ActualizarTipoCambio(TipoCambioFijoDto tipoCambioDto);
         Task<Response<TipoCambioResponseDto>> ConvertirTipoCambio(decimal monto, string monedaOrigen, string monedaDestino);
     }

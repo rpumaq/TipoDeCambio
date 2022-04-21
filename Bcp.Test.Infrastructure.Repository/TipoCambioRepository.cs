@@ -21,6 +21,44 @@ namespace Bcp.Test.Infrastructure.Repository
             _cache = cache;
         }
 
+        public async Task<List<TipoCambioFijo>> ListarTipoCambio()
+        {
+            // Check if content exists in cache
+            TipoCambioFijo[] tipoCambioResult = await _cache.GetCacheValueAsync<TipoCambioFijo[]>("tipoCambioResult");
+            if (tipoCambioResult != null)
+                return tipoCambioResult.ToList();
+            else
+                return new List<TipoCambioFijo>();
+        }
+
+        public async Task<bool> InsertarTipoCambio(TipoCambioFijo tipoCambio)
+        {
+            TipoCambioFijo[] tipoCambioResult = await _cache.GetCacheValueAsync<TipoCambioFijo[]>("tipoCambioResult");
+            if (tipoCambioResult != null)
+            {
+                var tipoCambioObj = (from x in tipoCambioResult where x.Fecha == tipoCambio.Fecha && x.MonedaOrigen == tipoCambio.MonedaOrigen && x.MonedaDestino == tipoCambio.MonedaDestino select x).FirstOrDefault();
+
+                if (tipoCambioObj == null)
+                {
+                    List<TipoCambioFijo> listaTipoCambio = tipoCambioResult.ToList();
+                    listaTipoCambio.Add(tipoCambio);
+                    await _cache.SetCacheValueAsync("tipoCambioResult", listaTipoCambio.ToArray());
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                List<TipoCambioFijo> listaTipoCambio = new List<TipoCambioFijo>();
+                listaTipoCambio.Add(tipoCambio);
+                await _cache.SetCacheValueAsync("tipoCambioResult", listaTipoCambio.ToArray());
+                return true;
+            }
+        }
+
         public async Task<bool> ActualizarTipoCambio(TipoCambioFijo tipoCambio)
         {
             TipoCambioFijo[] tipoCambioResult = await _cache.GetCacheValueAsync<TipoCambioFijo[]>("tipoCambioResult");
@@ -59,19 +97,7 @@ namespace Bcp.Test.Infrastructure.Repository
                 }
             }
 
-            List<TipoCambioFijo> listaTipoCambio = new List<TipoCambioFijo>();
-            listaTipoCambio.Add(new TipoCambioFijo
-            {
-                Fecha = DateTime.Now.Date,
-                MonedaOrigen = monedaOrigen,
-                MonedaDestino = monedaDestino,
-                TipoDeCambio = 3.70m
-            });
-
-            tipoCambioResult = listaTipoCambio.ToArray();
-
-            await _cache.SetCacheValueAsync("tipoCambioResult", tipoCambioResult);
-            return tipoCambioResult.First().TipoDeCambio;
+            return -1;
         }
     }
 }

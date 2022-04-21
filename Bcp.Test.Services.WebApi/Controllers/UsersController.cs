@@ -10,6 +10,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Bcp.Test.Services.WebApi.Controllers
 {
@@ -56,10 +57,10 @@ namespace Bcp.Test.Services.WebApi.Controllers
                 {
                     new Claim(ClaimTypes.Name, usersDto.Data.UserId.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _appSettings.Issuer,
-                Audience = _appSettings.Audience
+                Audience = _appSettings.Audience,
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
